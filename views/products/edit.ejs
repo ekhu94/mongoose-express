@@ -1,0 +1,26 @@
+<%- include('../partials/header') %>
+    <h1>Edit Product</h1>
+    <form action="/products/<%= product._id %>?_method=PATCH" method="POST">
+        <section>
+            <label for="name">Product Name</label>
+            <br>
+            <input value="<%= product.name %>" type="text" id="name" name="name">
+        </section>
+        <section>
+            <label for="price">Price (Unit)</label>
+            <br>
+            <input value="<%= product.price %>" type="number" id="price" name="price" step="0.01">
+        </section>
+        <section>
+            <label for="category">Category</label>
+            <br>
+            <select name="category" id="category">
+                <option value="fruit">Fruit</option>
+                <option value="vegetable">Vegetable</option>
+                <option value="dairy">Dairy</option>
+            </select>
+            <button type="submit">Update</button>
+        </section>
+    </form>
+    <a href="/products/<%= product._id %>">back to product</a>
+    <%- include('../partials/footer') %>

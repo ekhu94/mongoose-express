@@ -1,6 +1,7 @@
 const express = require("express");
 const app = express();
 const path = require("path");
+const methodOverride = require("method-override");
 
 const mongoose = require("mongoose");
 mongoose
@@ -16,6 +17,7 @@ const Product = require("./models/product");
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 app.use(express.urlencoded({ extended: true }));
+app.use(methodOverride("_method"));
 
 app.listen(3000, () => {
   console.log("Listening on Port 3000");
@@ -39,5 +41,20 @@ app.get("/products/:id", async (req, res) => {
 app.post("/products", async (req, res) => {
   const product = new Product(req.body);
   await product.save();
-  res.redirect(`/products/${product.id}`);
+  res.redirect(`/products/${product._id}`);
+});
+
+app.get("/products/:id/edit", async (req, res) => {
+  const { id } = req.params;
+  const product = await Product.findById(id);
+  res.render("products/edit", { product, title: "Edit Product" });
+});
+
+app.patch("/products/:id", async (req, res) => {
+  const { id } = req.params;
+  const product = await Product.findByIdAndUpdate(id, req.body, {
+    new: true,
+    runValidators: true,
+  });
+  res.redirect(`/products/${product._id}`);
 });
