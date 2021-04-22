@@ -2,7 +2,7 @@
 <h2><%= product.name %> </h2>
 <ul>
     <li>Price: $<%= product.price %></li>
-    <li>Category: <%= product.category %></li>
+    <li>Category: <a href="/products?category=<%= product.category %>"><%= product.category %></a></li>
 </ul>
 <a href="/products">back to products</a>
 <a href="/products/<%= product._id %>/edit">edit product</a>

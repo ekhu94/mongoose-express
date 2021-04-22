@@ -14,6 +14,9 @@ mongoose
 
 const Product = require("./models/product");
 
+//* CSS Boostrap
+app.use(express.static(path.join(__dirname, "public")));
+
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 app.use(express.urlencoded({ extended: true }));
@@ -26,8 +29,22 @@ app.listen(3000, () => {
 const categories = ["fruit", "vegetable", "dairy"];
 
 app.get("/products", async (req, res) => {
-  const products = await Product.find({});
-  res.render("products/index", { products, title: "Products" });
+  const { category } = req.query;
+  if (category) {
+    const products = await Product.find({ category });
+    res.render("products/index", {
+      products,
+      category,
+      title: `${category[0].toUpperCase() + category.slice(1)} Products`,
+    });
+  } else {
+    const products = await Product.find({});
+    res.render("products/index", {
+      products,
+      category: "all",
+      title: "All Products",
+    });
+  }
 });
 
 app.get("/products/new", (req, res) => {
