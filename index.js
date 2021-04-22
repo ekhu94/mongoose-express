@@ -22,5 +22,11 @@ app.listen(3000, () => {
 
 app.get("/products", async (req, res) => {
   const products = await Product.find({});
-  res.render("products/index", { products });
+  res.render("products/index", { products, title: "Products" });
+});
+
+app.get("/products/:id", async (req, res) => {
+  const { id } = req.params;
+  const product = await Product.findById(id);
+  res.render("products/show", { product, title: product.name });
 });
