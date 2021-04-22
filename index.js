@@ -23,13 +23,15 @@ app.listen(3000, () => {
   console.log("Listening on Port 3000");
 });
 
+const categories = ["fruit", "vegetable", "dairy"];
+
 app.get("/products", async (req, res) => {
   const products = await Product.find({});
   res.render("products/index", { products, title: "Products" });
 });
 
 app.get("/products/new", (req, res) => {
-  res.render("products/new", { title: "New Product" });
+  res.render("products/new", { title: "New Product", categories });
 });
 
 app.get("/products/:id", async (req, res) => {
@@ -47,7 +49,7 @@ app.post("/products", async (req, res) => {
 app.get("/products/:id/edit", async (req, res) => {
   const { id } = req.params;
   const product = await Product.findById(id);
-  res.render("products/edit", { product, title: "Edit Product" });
+  res.render("products/edit", { product, title: "Edit Product", categories });
 });
 
 app.patch("/products/:id", async (req, res) => {
