@@ -2,8 +2,6 @@ const express = require("express");
 const app = express();
 const path = require("path");
 
-const Product = require("./models/product");
-
 const mongoose = require("mongoose");
 mongoose
   .connect("mongodb://localhost:27017/farmStand", {
@@ -13,11 +11,14 @@ mongoose
   .then((res) => console.log("Mongoose connection open"))
   .catch((err) => console.log(err));
 
+const Product = require("./models/product");
+
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
+app.use(express.urlencoded({ extended: true }));
 
 app.listen(3000, () => {
-  console.log("Server listening on Port 3000");
+  console.log("Listening on Port 3000");
 });
 
 app.get("/products", async (req, res) => {
@@ -25,8 +26,18 @@ app.get("/products", async (req, res) => {
   res.render("products/index", { products, title: "Products" });
 });
 
+app.get("/products/new", (req, res) => {
+  res.render("products/new", { title: "New Product" });
+});
+
 app.get("/products/:id", async (req, res) => {
   const { id } = req.params;
   const product = await Product.findById(id);
   res.render("products/show", { product, title: product.name });
+});
+
+app.post("/products", async (req, res) => {
+  const product = new Product(req.body);
+  await product.save();
+  res.redirect(`/products/${product.id}`);
 });
