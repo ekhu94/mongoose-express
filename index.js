@@ -19,3 +19,8 @@ app.set("view engine", "ejs");
 app.listen(3000, () => {
   console.log("Server listening on Port 3000");
 });
+
+app.get("/products", async (req, res) => {
+  const products = await Product.find({});
+  res.render("products/index", { products });
+});
