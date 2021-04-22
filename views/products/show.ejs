@@ -6,4 +6,7 @@
 </ul>
 <a href="/products">back to products</a>
 <a href="/products/<%= product._id %>/edit">edit product</a>
+<form action="/products/<%= product._id %>/delete?_method=DELETE" method="POST">
+    <button type="submit">delete</button>
+</form>
 <%- include('../partials/footer') %> 

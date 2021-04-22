@@ -60,3 +60,9 @@ app.patch("/products/:id", async (req, res) => {
   });
   res.redirect(`/products/${product._id}`);
 });
+
+app.delete("/products/:id/delete", async (req, res) => {
+  const { id } = req.params;
+  await Product.findByIdAndDelete(id);
+  res.redirect("/products");
+});
